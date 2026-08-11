@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>INEN 银安 — 一个账户，装下你的全球资产</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0A0A0C;
+    --panel:#14151A;
+    --panel-2:#1B1C22;
+    --panel-edge:#2A2A22;
+    --ink:#ECE8DF;
+    --ink-soft:#9C978C;
+    --ink-faint:#615D53;
+    --hairline:rgba(255,255,255,0.08);
+    --hairline-2:rgba(255,255,255,0.14);
+    --accent:#C7A468;
+    --accent-deep:#E4CB98;
+    --accent-dim:#8E6D34;
+    --verdigris:#5B9A81;
+    --verdigris-deep:#3E6F5B;
+    --paper:#F3EEE3;
+    --paper-ink:#1C1812;
+    --paper-ink-soft:#6B6353;
+    --radius-lg:28px;
+    --radius-md:18px;
+    --maxw:1180px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:'Inter','PingFang SC','Noto Sans SC',-apple-system,sans-serif;
+    -webkit-font-smoothing:antialiased; line-height:1.5;
+  }
+  .zh{font-family:'PingFang SC','Noto Sans SC','Inter',sans-serif;}
+  .num{font-variant-numeric:tabular-nums;}
+  img,svg{display:block; max-width:100%;}
+  a{color:inherit; text-decoration:none;}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 32px;}
+  section{position:relative;}
+
+  /* signature: engine-turned guilloché rosette texture, echoing banknote / security-document engraving */
+  .rosette-bg{
+    position:absolute; border-radius:50%; pointer-events:none;
+    background-image:repeating-radial-gradient(circle at 50% 50%, transparent 0 2px, rgba(199,164,104,0.10) 2px 3px);
+  }
+  .noise::before{
+    content:''; position:absolute; inset:0; pointer-events:none; opacity:0.4; mix-blend-mode:overlay; z-index:0;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  }
+
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px; font-size:11.5px; font-weight:700; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--accent);
+  }
+  .eyebrow::before{ content:'◆'; font-size:8px; transform:translateY(-1px);}
+
+  h1,h2,h3{margin:0; letter-spacing:-0.02em;}
+  .h1{font-size:56px; font-weight:800; line-height:1.08;}
+  .h2{font-size:38px; font-weight:800; line-height:1.15;}
+  .h3{font-size:22px; font-weight:700; line-height:1.3;}
+  .lede{font-size:18px; color:var(--ink-soft); line-height:1.7; font-weight:400;}
+  .grad{
+    background:linear-gradient(100deg, var(--accent-deep) 0%, var(--ink) 45%, var(--accent) 100%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+
+  /* ---------- Nav ---------- */
+  header{
+    position:sticky; top:0; z-index:100;
+    background:rgba(10,10,12,0.82); backdrop-filter:blur(16px) saturate(160%);
+    border-bottom:1px solid var(--hairline);
+  }
+  .navrow{display:flex; align-items:center; justify-content:space-between; padding:18px 0;}
+  .brand{display:flex; align-items:center; gap:10px; font-weight:800; font-size:18px; letter-spacing:.01em;}
+  .brand .mark{
+    width:34px; height:34px; border-radius:50%; background:var(--panel-2); border:1.5px solid var(--accent-dim);
+    display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; color:var(--accent);
+    font-family:'Noto Sans SC',sans-serif;
+    background-image:repeating-radial-gradient(circle at 50% 50%, transparent 0 2px, rgba(199,164,104,0.18) 2px 3px), radial-gradient(circle at 35% 30%, #23241f, var(--panel-2) 70%);
+  }
+  nav.links{display:flex; gap:36px; font-size:14.5px; color:var(--ink-soft); font-weight:500;}
+  nav.links a:hover{color:var(--ink);}
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    padding:12px 22px; border-radius:12px; font-weight:700; font-size:14.5px; cursor:pointer; border:none;
+    transition:transform .15s ease, opacity .15s ease;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn-solid{background:var(--ink); color:var(--bg);}
+  .btn-outline{background:transparent; color:var(--ink); border:1.5px solid var(--hairline-2);}
+  .btn-accent{background:linear-gradient(155deg, var(--accent-deep), var(--accent)); color:#211705; box-shadow:0 14px 28px -14px rgba(199,164,104,0.55);}
+
+  /* ---------- Hero ---------- */
+  .hero{padding:96px 0 60px; overflow:hidden;}
+  .hero .rosette-bg{width:900px; height:900px; right:-320px; top:-260px; opacity:.7;}
+  .hero-grid{display:grid; grid-template-columns:1.05fr 0.95fr; gap:56px; align-items:center; position:relative; z-index:1;}
+  .hero-copy .h1{margin-top:22px;}
+  .hero-copy .lede{margin-top:22px; max-width:480px;}
+  .hero-actions{display:flex; gap:14px; margin-top:34px; flex-wrap:wrap;}
+  .hero-stats{display:flex; gap:40px; margin-top:52px; padding-top:28px; border-top:1px solid var(--hairline);}
+  .hero-stat .v{font-size:26px; font-weight:800; color:var(--ink);}
+  .hero-stat .l{font-size:12.5px; color:var(--ink-faint); margin-top:4px;}
+
+  /* phone mockup */
+  .phone-mock{
+    width:290px; margin:0 auto; border-radius:40px; background:var(--bg); border:1px solid #26262a;
+    box-shadow:0 40px 90px -30px rgba(0,0,0,0.7), 0 0 0 7px #050506; padding:10px; position:relative;
+  }
+  .phone-screen{
+    border-radius:30px; background:var(--panel); padding:22px 18px; min-height:470px; position:relative; overflow:hidden;
+  }
+  .phone-screen::before{
+    content:''; position:absolute; width:280px; height:280px; border-radius:50%; left:50%; top:60px; transform:translateX(-50%);
+    background-image:repeating-radial-gradient(circle at 50% 50%, transparent 0 2px, rgba(199,164,104,0.10) 2px 3px);
+    mask-image:radial-gradient(circle, black 45%, transparent 75%);
+  }
+  .ps-row{display:flex; justify-content:space-between; align-items:center; position:relative; z-index:1;}
+  .ps-avatar{width:32px;height:32px;border-radius:50%; background:#1f2024; border:1px solid var(--accent-dim); display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:800; color:var(--accent); font-family:'Noto Sans SC';}
+  .ps-bell{width:28px;height:28px;border-radius:50%; background:#1f2024; border:1px solid var(--hairline);}
+  .ps-label{font-size:9.5px; text-align:center; color:var(--ink-faint); font-weight:700; letter-spacing:.1em; text-transform:uppercase; margin-top:26px; position:relative; z-index:1;}
+  .ps-value{font-size:30px; font-weight:800; text-align:center; margin-top:8px; letter-spacing:-0.01em; position:relative; z-index:1;}
+  .ps-qa{display:flex; justify-content:space-between; margin-top:26px; position:relative; z-index:1;}
+  .ps-qa div{width:42px;height:42px;border-radius:14px; background:#1f2024; border:1px solid var(--accent-dim);}
+  .ps-card{margin-top:20px; border-radius:16px; padding:14px; background:linear-gradient(150deg,#1f2024,#111216); border:1px solid var(--panel-edge); position:relative; z-index:1;}
+  .ps-card .l1{font-size:9px; color:var(--accent); font-weight:700; letter-spacing:.1em;}
+  .ps-card .l2{font-size:13px; font-weight:700; margin-top:6px;}
+  .ps-card .l3{font-size:10px; color:var(--ink-faint); margin-top:4px;}
+  .ps-rows{margin-top:18px; position:relative; z-index:1;}
+  .ps-rows div{height:9px; border-radius:5px; background:#1f2024; margin-bottom:9px;}
+  .ps-rows div:nth-child(1){width:70%;}
+  .ps-rows div:nth-child(2){width:55%;}
+  .ps-rows div:nth-child(3){width:62%;}
+
+  /* ---------- Trust bar ---------- */
+  .trustbar{padding:26px 0; border-top:1px solid var(--hairline); border-bottom:1px solid var(--hairline);}
+  .trustrow{display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:18px;}
+  .trustrow .label{font-size:11px; color:var(--ink-faint); font-weight:700; letter-spacing:.12em; text-transform:uppercase;}
+  .trust-items{display:flex; gap:32px; flex-wrap:wrap;}
+  .trust-items span{font-size:13px; color:var(--ink-soft); font-weight:600;}
+
+  /* ---------- Section shells ---------- */
+  .section{padding:110px 0;}
+  .section-head{max-width:640px; margin:0 0 60px;}
+  .section-head .h2{margin-top:18px;}
+  .section-head .lede{margin-top:16px;}
+  .section-alt{background:var(--panel); border-top:1px solid var(--hairline); border-bottom:1px solid var(--hairline);}
+
+  /* ---------- Feature trio (Kolan-style) ---------- */
+  .trio{display:grid; grid-template-columns:repeat(3,1fr); gap:22px;}
+  .trio-card{
+    background:var(--panel); border:1px solid var(--hairline); border-radius:var(--radius-lg); padding:32px;
+    position:relative; overflow:hidden;
+  }
+  .trio-card::before{
+    content:''; position:absolute; right:-40px; top:-50px; width:180px; height:180px; border-radius:50%;
+    background-image:repeating-radial-gradient(circle at 50% 50%, transparent 0 2px, rgba(199,164,104,0.08) 2px 3px);
+  }
+  .trio-ic{
+    width:52px; height:52px; border-radius:16px; background:var(--panel-2); border:1px solid var(--accent-dim);
+    display:flex; align-items:center; justify-content:center; color:var(--accent); position:relative; z-index:1;
+  }
+  .trio-card .h3{margin-top:22px; position:relative; z-index:1;}
+  .trio-card p{color:var(--ink-soft); font-size:14.5px; margin-top:10px; line-height:1.65; position:relative; z-index:1;}
+
+  /* ---------- Feature spotlight (Grey-style alternating) ---------- */
+  .spot{display:grid; grid-template-columns:1fr 1fr; gap:70px; align-items:center; padding:64px 0;}
+  .spot + .spot{border-top:1px solid var(--hairline);}
+  .spot.reverse .spot-copy{order:2;}
+  .spot.reverse .spot-visual{order:1;}
+  .spot-copy .eyebrow{margin-bottom:16px;}
+  .spot-copy .h2{font-size:30px;}
+  .spot-copy .lede{margin-top:14px; font-size:15.5px;}
+  .spot-list{margin-top:26px; display:flex; flex-direction:column; gap:14px;}
+  .spot-list li{display:flex; gap:12px; align-items:flex-start; list-style:none; font-size:14.5px; color:var(--ink-soft);}
+  .spot-list .chk{width:20px;height:20px;border-radius:50%; background:var(--panel-2); border:1px solid var(--verdigris-deep); color:var(--verdigris); display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;}
+  .spot-visual{
+    background:var(--panel); border:1px solid var(--hairline); border-radius:var(--radius-lg); padding:38px;
+    min-height:320px; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden;
+  }
+  .spot-visual::before{
+    content:''; position:absolute; width:340px; height:340px; border-radius:50%; left:50%; top:50%; transform:translate(-50%,-50%);
+    background-image:repeating-radial-gradient(circle at 50% 50%, transparent 0 2px, rgba(199,164,104,0.07) 2px 3px);
+  }
+  .mini-card{
+    width:100%; max-width:340px; border-radius:20px; padding:26px; position:relative; z-index:1;
+    background:linear-gradient(150deg,#1a1b1f,#101114); border:1px solid var(--panel-edge); box-shadow:0 30px 60px -25px rgba(0,0,0,0.6);
+  }
+  .mini-card .mc-tag{font-size:10px; color:var(--accent); font-weight:700; letter-spacing:.12em; text-transform:uppercase;}
+  .mini-card .mc-val{font-size:30px; font-weight:800; margin-top:12px;}
+  .mini-card .mc-sub{font-size:12px; color:var(--ink-faint); margin-top:6px;}
+  .mini-card .mc-foot{display:flex; justify-content:space-between; align-items:center; margin-top:26px; padding-top:18px; border-top:1px solid var(--hairline);}
+  .mini-card .mc-chip{display:flex; align-items:center; gap:6px; background:rgba(255,255,255,0.05); border:1px solid var(--hairline); border-radius:20px; padding:6px 10px; font-size:11px; font-weight:700;}
+  .tokdot{width:16px;height:16px;border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:8px; font-weight:800; color:#fff;}
+
+  /* ---------- Security section ---------- */
+  .sec-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:20px;}
+  .sec-card{background:var(--bg); border:1px solid var(--hairline); border-radius:var(--radius-md); padding:26px;}
+  .sec-card .ic{width:40px;height:40px;border-radius:12px; background:var(--panel-2); border:1px solid var(--accent-dim); display:flex; align-items:center; justify-content:center; color:var(--accent);}
+  .sec-card .t{font-size:15px; font-weight:700; margin-top:16px;}
+  .sec-card .s{font-size:13px; color:var(--ink-soft); margin-top:8px; line-height:1.6;}
+
+  /* ---------- Checklist grid (not numbered — not a sequence) ---------- */
+  .check-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--hairline); border:1px solid var(--hairline); border-radius:var(--radius-lg); overflow:hidden;}
+  .check-item{background:var(--panel); padding:30px 26px;}
+  .check-item .chk{width:26px;height:26px;border-radius:50%; background:var(--panel-2); border:1px solid var(--verdigris-deep); color:var(--verdigris); display:flex; align-items:center; justify-content:center; font-size:12px;}
+  .check-item .t{font-size:15px; font-weight:700; margin-top:16px;}
+  .check-item .s{font-size:13px; color:var(--ink-soft); margin-top:8px; line-height:1.6;}
+
+  /* ---------- Testimonials ---------- */
+  .testi-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:22px;}
+  .testi-card{background:var(--bg); border:1px solid var(--hairline); border-radius:var(--radius-lg); padding:30px; display:flex; flex-direction:column; justify-content:space-between; min-height:220px;}
+  .testi-card .q{font-size:14.5px; color:var(--ink-soft); line-height:1.75;}
+  .testi-who{display:flex; align-items:center; gap:12px; margin-top:24px;}
+  .testi-who .av{width:38px;height:38px;border-radius:50%; background:var(--panel-2); border:1px solid var(--accent-dim); display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:800; color:var(--accent);}
+  .testi-who .n{font-size:13.5px; font-weight:700;}
+  .testi-who .r{font-size:11.5px; color:var(--ink-faint); margin-top:2px;}
+
+  /* ---------- Download CTA band ---------- */
+  .ctaband{
+    border-radius:var(--radius-lg); padding:70px 60px; text-align:center; position:relative; overflow:hidden;
+    background:linear-gradient(150deg,#17181c,#0d0e10); border:1px solid var(--panel-edge);
+  }
+  .ctaband::before{
+    content:''; position:absolute; width:600px; height:600px; border-radius:50%; left:50%; top:-260px; transform:translateX(-50%);
+    background-image:repeating-radial-gradient(circle at 50% 50%, transparent 0 2px, rgba(199,164,104,0.08) 2px 3px);
+  }
+  .ctaband > *{position:relative; z-index:1;}
+  .ctaband .h2{font-size:36px;}
+  .ctaband .lede{margin:16px auto 0; max-width:460px;}
+  .storebtns{display:flex; gap:14px; justify-content:center; margin-top:32px; flex-wrap:wrap;}
+  .storebtn{display:flex; align-items:center; gap:10px; padding:12px 20px; border-radius:12px; background:var(--panel-2); border:1px solid var(--hairline-2); font-size:13px;}
+  .storebtn .sb-t{font-size:9.5px; color:var(--ink-faint);}
+  .storebtn .sb-b{font-size:14px; font-weight:700; margin-top:1px;}
+
+  /* ---------- Footer ---------- */
+  footer{padding:70px 0 40px; border-top:1px solid var(--hairline);}
+  .foot-top{display:grid; grid-template-columns:1.4fr repeat(4,1fr); gap:40px;}
+  .foot-brand .brand{margin-bottom:16px;}
+  .foot-brand p{font-size:13px; color:var(--ink-faint); line-height:1.7; max-width:280px;}
+  .foot-col .ft{font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:16px;}
+  .foot-col a{display:block; font-size:13.5px; color:var(--ink-soft); margin-bottom:12px;}
+  .foot-col a:hover{color:var(--ink);}
+  .foot-bottom{display:flex; justify-content:space-between; align-items:flex-start; gap:20px; margin-top:60px; padding-top:28px; border-top:1px solid var(--hairline); flex-wrap:wrap;}
+  .foot-legal{font-size:11.5px; color:var(--ink-faint); line-height:1.7; max-width:640px;}
+  .foot-social{display:flex; gap:10px;}
+  .foot-social a{width:34px;height:34px;border-radius:50%; background:var(--panel-2); border:1px solid var(--hairline); display:flex; align-items:center; justify-content:center; color:var(--ink-soft);}
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 980px){
+    .wrap{padding:0 20px;}
+    nav.links{display:none;}
+    .hero-grid{grid-template-columns:1fr; gap:48px;}
+    .hero .rosette-bg{display:none;}
+    .h1{font-size:38px;}
+    .h2{font-size:28px;}
+    .hero-stats{flex-wrap:wrap; gap:24px;}
+    .trio{grid-template-columns:1fr;}
+    .sec-grid{grid-template-columns:repeat(2,1fr);}
+    .spot{grid-template-columns:1fr; gap:32px; padding:40px 0;}
+    .spot.reverse .spot-copy, .spot.reverse .spot-visual{order:initial;}
+    .check-grid{grid-template-columns:1fr;}
+    .testi-grid{grid-template-columns:1fr;}
+    .foot-top{grid-template-columns:1fr 1fr; gap:32px;}
+    .ctaband{padding:48px 24px;}
+    .section{padding:70px 0;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap navrow">
+    <div class="brand"><span class="mark zh">银安</span>INEN 银安</div>
+    <nav class="links zh">
+      <a href="#product">产品</a>
+      <a href="#security">安全合规</a>
+      <a href="#faq">常见问题</a>
+      <a href="#about">关于我们</a>
+    </nav>
+    <div style="display:flex; gap:12px;">
+      <a class="btn btn-outline zh" href="#download">登录</a>
+      <a class="btn btn-accent zh" href="#download">下载 App</a>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="rosette-bg" style="width:900px;height:900px;right:-320px;top:-260px;"></div>
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <span class="eyebrow zh">VSTAR LIMITED 旗下战略金融品牌</span>
+      <h1 class="h1 zh">一个账户，<br>装下你的<span class="grad">全球资产</span></h1>
+      <p class="lede zh">美元银行账户、USDT/USDC 稳定币钱包、链上理财、全球速汇与虚拟消费卡 — 银安 INEN 把收款、持有、增值与消费，统一在一个账户里完成。</p>
+      <div class="hero-actions">
+        <a class="btn btn-accent zh" href="#download">立即下载</a>
+        <a class="btn btn-outline zh" href="#product">了解产品 →</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><div class="v num">100+</div><div class="l zh">可用国家 / 地区</div></div>
+        <div class="hero-stat"><div class="v num">4.5%</div><div class="l zh">稳定币活期年化起</div></div>
+        <div class="hero-stat"><div class="v num">24/7</div><div class="l zh">链上与 FedNow 即时到账</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="phone-mock">
+        <div class="phone-screen">
+          <div class="ps-row">
+            <div class="ps-avatar zh">银安</div>
+            <div class="ps-bell"></div>
+          </div>
+          <div class="ps-label zh">总资产</div>
+          <div class="ps-value num">$26,102.02</div>
+          <div class="ps-qa">
+            <div></div><div></div><div></div><div></div>
+          </div>
+          <div class="ps-card">
+            <div class="l1">INEN EARN</div>
+            <div class="l2 zh">USDT 活期理财 · 4.5% 年化</div>
+            <div class="l3 zh">每日计息 · 随存随取</div>
+          </div>
+          <div class="ps-rows">
+            <div></div><div></div><div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="trustbar">
+  <div class="wrap trustrow">
+    <span class="label zh">受托管银行与持牌机构监管保障</span>
+    <div class="trust-items zh">
+      <span>持牌托管银行</span>
+      <span>KYC / AML 合规体系</span>
+      <span>Union Trust Bank, N.A. 银行合作伙伴</span>
+      <span>链上资产隔离存管</span>
+    </div>
+  </div>
+</div>
+
+<section class="section" id="product">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow zh">一个余额，多种用法</span>
+      <h2 class="h2 zh">收款、持有、增值、消费，<br>都从同一个账户出发</h2>
+      <p class="lede zh">银安不是把美元、稳定币、理财和消费卡拆成互不相干的产品，而是让它们共享同一套账户体系 — 需要跨币种时用"兑换"完成，同币种之间即时联动。</p>
+    </div>
+    <div class="trio">
+      <div class="trio-card">
+        <div class="trio-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 21h18M3 10h18M5 6l7-4 7 4M4 10v11m16-11v11M9 21v-6h6v6"/></svg></div>
+        <h3 class="h3 zh">全球收款</h3>
+        <p class="zh">开通专属美元账户，支持 ACH / Wire / FedNow / SWIFT 收款，像本地账户一样接收全球汇款与代发工资。</p>
+      </div>
+      <div class="trio-card">
+        <div class="trio-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2 2 7l10 5 10-5-10-5Z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg></div>
+        <h3 class="h3 zh">稳定币持有与增值</h3>
+        <p class="zh">USDT / USDC 独立钱包持有，随时兑换美元；接入稳定币理财，活期 4.5% 起，闲置资产也能持续增值。</p>
+      </div>
+      <div class="trio-card">
+        <div class="trio-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+        <h3 class="h3 zh">全球消费与速汇</h3>
+        <p class="zh">虚拟消费卡直连美元账户，刷卡即扣余额；全球速汇支持链上稳定币与 SWIFT 双通道，资金想去哪就去哪。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-alt">
+  <div class="wrap">
+
+    <div class="spot">
+      <div class="spot-copy">
+        <span class="eyebrow zh">美元账户</span>
+        <h2 class="h2 zh">像本地账户一样，<br>接收全球每一笔收入</h2>
+        <p class="lede zh">开户即获得专属的美国银行账户信息 — 账号、ACH / Wire 路由号一应俱全，支持从 Deel、Upwork、跨境电商平台或雇主直接代发工资。</p>
+        <ul class="spot-list zh">
+          <li><span class="chk">✓</span>支持 FedNow 即时到账、ACH / Wire 及 SWIFT 国际电汇</li>
+          <li><span class="chk">✓</span>资金由持牌托管银行隔离存管，非银安自持</li>
+          <li><span class="chk">✓</span>消费卡直接绑定此账户，无需额外充值</li>
+        </ul>
+      </div>
+      <div class="spot-visual">
+        <div class="mini-card">
+          <div class="mc-tag">US CHECKING</div>
+          <div class="mc-val num">$12,480.32</div>
+          <div class="mc-sub zh">美元账户 · FDIC 合作银行托管</div>
+          <div class="mc-foot">
+            <span class="zh" style="font-size:11px;color:var(--ink-faint);">····7742 · ABA 026009593</span>
+            <span class="mc-chip">🇺🇸 USD</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spot reverse">
+      <div class="spot-copy">
+        <span class="eyebrow zh">稳定币钱包</span>
+        <h2 class="h2 zh">USDT 与 USDC，<br>各自独立、清晰可查</h2>
+        <p class="lede zh">稳定币钱包与美元账户完全独立记账 — USDT、USDC 分别显示余额、地址与链上网络，支持 TRC20 / BEP20 / Solana 等主流网络充值。</p>
+        <ul class="spot-list zh">
+          <li><span class="chk">✓</span>与美元账户之间的资金往来统一通过"兑换"完成</li>
+          <li><span class="chk">✓</span>每种代币独立地址、独立交易记录</li>
+          <li><span class="chk">✓</span>链上到账通常仅需数分钟</li>
+        </ul>
+      </div>
+      <div class="spot-visual">
+        <div class="mini-card">
+          <div class="mc-tag">STABLECOIN WALLET</div>
+          <div class="mc-val num">$8,214.90</div>
+          <div class="mc-sub zh">USDT / USDC 独立记账</div>
+          <div class="mc-foot">
+            <span class="mc-chip"><span class="tokdot" style="background:#26A17B;">T</span>USDT</span>
+            <span class="mc-chip"><span class="tokdot" style="background:#2775CA;">C</span>USDC</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spot">
+      <div class="spot-copy">
+        <span class="eyebrow zh">INEN EARN 理财</span>
+        <h2 class="h2 zh">闲置稳定币，<br>每天都在为你计息</h2>
+        <p class="lede zh">活期理财随存随取，年化 4.5% 起；90 天定期理财最高可达 8.2% 年化。资金由持牌托管机构隔离存管，收益每日可视化查询。</p>
+        <ul class="spot-list zh">
+          <li><span class="chk">✓</span>仅支持 USDT / USDC 存入，美元需先在"兑换"中换成 USDC</li>
+          <li><span class="chk">✓</span>活期每日计息，定期到期自动结算</li>
+          <li><span class="chk">✓</span>理财产品不保证收益，历史年化不代表未来表现</li>
+        </ul>
+      </div>
+      <div class="spot-visual">
+        <div class="mini-card">
+          <div class="mc-tag">INEN EARN</div>
+          <div class="mc-val num">8.2%</div>
+          <div class="mc-sub zh">USDT 定期理财 90 天 · 年化</div>
+          <div class="mc-foot">
+            <span class="zh" style="font-size:11px;color:var(--ink-faint);">每日计息 · 到期自动结算</span>
+            <span class="mc-chip" style="color:var(--verdigris);">▲ 4.5% 活期</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spot reverse">
+      <div class="spot-copy">
+        <span class="eyebrow zh">全球速汇</span>
+        <h2 class="h2 zh">发给谁、发什么币种，<br>体验各不相同</h2>
+        <p class="lede zh">发送稳定币，即时到账、手续费仅 $0.80；发送外币，支持链上稳定币或 SWIFT 双通道，实时汇率换算，费用透明。</p>
+        <ul class="spot-list zh">
+          <li><span class="chk">✓</span>稳定币 / 美元收款人，即时到账无需换汇</li>
+          <li><span class="chk">✓</span>外币收款人，链上稳定币或 SWIFT 两种到账方式可选</li>
+          <li><span class="chk">✓</span>常用收款人一键保存，下次转账更快</li>
+        </ul>
+      </div>
+      <div class="spot-visual">
+        <div class="mini-card">
+          <div class="mc-tag zh">全球速汇 · 泰国</div>
+          <div class="mc-val num">฿35,940.00</div>
+          <div class="mc-sub zh">对方收款 · SWIFT 通道</div>
+          <div class="mc-foot">
+            <span class="zh" style="font-size:11px;color:var(--ink-faint);">1–2 个工作日到账</span>
+            <span class="mc-chip">手续费 $35.00</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spot">
+      <div class="spot-copy">
+        <span class="eyebrow zh">银安尊享卡 · 即将上线</span>
+        <h2 class="h2 zh">刷卡即用，<br>直连美元账户余额</h2>
+        <p class="lede zh">银安虚拟消费卡不是另一个钱包 — 它直接绑定美元账户消费，账户里有多少就能花多少，无需预先转账或充值，全球线上线下消费均可使用。</p>
+        <ul class="spot-list zh">
+          <li><span class="chk">✓</span>每笔消费最高返还 2% USDT，结算后 1–3 天到账</li>
+          <li><span class="chk">✓</span>担保信用模式，无隐藏透支风险</li>
+          <li><span class="chk">✓</span>余额不足？银行转账或稳定币兑换即可补充</li>
+        </ul>
+      </div>
+      <div class="spot-visual">
+        <div class="mini-card" style="background:linear-gradient(150deg,#24242a,#101012);">
+          <div class="mc-tag" style="display:flex;justify-content:space-between;align-items:center;">
+            <span>INEN</span>
+            <span class="zh" style="font-size:9px;border:1px solid var(--hairline-2);padding:4px 8px;border-radius:20px;">全球通用</span>
+          </div>
+          <div style="width:32px;height:24px;border-radius:6px;background:linear-gradient(155deg,var(--accent-deep),var(--accent));margin-top:26px;"></div>
+          <div class="mc-val" style="font-size:16px;letter-spacing:.12em;margin-top:22px;">•••• •••• •••• 4471</div>
+          <div class="mc-foot"><span class="zh" style="font-size:11px;color:var(--ink-faint);">CARD HOLDER</span><span style="font-size:12px;font-weight:700;">HOWIE LU</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="section" id="security">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow zh">安全，是名字里的承诺</span>
+      <h2 class="h2 zh">"银安"二字，<br>就是我们的产品哲学</h2>
+      <p class="lede zh">银 = 银行级资产管理，安 = 安全与安心。从账户开立到每一笔交易，银安把合规与安全构建在产品底层，而不是事后补丁。</p>
+    </div>
+    <div class="sec-grid">
+      <div class="sec-card">
+        <div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg></div>
+        <div class="t zh">持牌托管</div>
+        <div class="s zh">美元资金由持牌银行伙伴隔离存管，稳定币资产链上可查，均非银安自持挪用。</div>
+      </div>
+      <div class="sec-card">
+        <div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+        <div class="t zh">KYC / AML 合规</div>
+        <div class="s zh">身份分级认证体系，交易全程反洗钱监控，符合美国及跨境金融监管要求。</div>
+      </div>
+      <div class="sec-card">
+        <div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+        <div class="t zh">交易实时验证</div>
+        <div class="s zh">每一笔转账、兑换与消费均需二次确认，异常交易实时拦截并提醒。</div>
+      </div>
+      <div class="sec-card">
+        <div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></div>
+        <div class="t zh">即时提醒</div>
+        <div class="s zh">收款、消费、理财到期均实时推送通知，账户异动第一时间掌握。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-alt">
+  <div class="wrap" style="padding:110px 0;">
+    <div class="section-head">
+      <span class="eyebrow zh">选择银安的理由</span>
+      <h2 class="h2 zh">把复杂的全球金融，<br>做成一件轻松的事</h2>
+    </div>
+    <div class="check-grid">
+      <div class="check-item">
+        <div class="chk">✓</div>
+        <div class="t zh">零账户与卡片维护费</div>
+        <div class="s zh">开户、持有、消费均无隐藏月费，费用透明可查。</div>
+      </div>
+      <div class="check-item">
+        <div class="chk">✓</div>
+        <div class="t zh">有竞争力的兑换与转账费率</div>
+        <div class="s zh">兑换 0.14% 起，稳定币转账仅 $0.80，费率结构清晰。</div>
+      </div>
+      <div class="check-item">
+        <div class="chk">✓</div>
+        <div class="t zh">真实可用的美国账户信息</div>
+        <div class="s zh">账号、ACH / Wire 路由号完整可查，支持主流平台代发工资。</div>
+      </div>
+      <div class="check-item">
+        <div class="chk">✓</div>
+        <div class="t zh">稳定币资产独立可查</div>
+        <div class="s zh">USDT / USDC 各自独立地址与记录，资产归属一目了然。</div>
+      </div>
+      <div class="check-item">
+        <div class="chk">✓</div>
+        <div class="t zh">每日计息的活期理财</div>
+        <div class="s zh">闲置稳定币也能持续增值，收益每日可视化查询。</div>
+      </div>
+      <div class="check-item">
+        <div class="chk">✓</div>
+        <div class="t zh">中英双语，7×24 支持</div>
+        <div class="s zh">面向全球华人与跨境从业者，随时提供中文客服支持。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow zh">用户怎么说</span>
+      <h2 class="h2 zh">来自跨境从业者的真实反馈</h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card">
+        <div class="q zh">"以前收美元工资要等好几天到账，现在用银安的美元账户，客户直接 ACH 打款，当天就能看到余额。"</div>
+        <div class="testi-who"><div class="av zh">陈</div><div><div class="n zh">陈先生</div><div class="r zh">跨境电商卖家</div></div></div>
+      </div>
+      <div class="testi-card">
+        <div class="q zh">"稳定币和美元账户分开管理反而更清楚，不会搞混哪部分是法币哪部分是链上资产，理财收益每天都能看到。"</div>
+        <div class="testi-who"><div class="av">M</div><div><div class="n">Maria</div><div class="r zh">自由职业设计师</div></div></div>
+      </div>
+      <div class="testi-card">
+        <div class="q zh">"全球速汇给泰国的供应商打款，选稳定币链上通道，几乎是秒到账，手续费也比银行电汇便宜太多。"</div>
+        <div class="testi-who"><div class="av zh">吴</div><div><div class="n zh">吴小姐</div><div class="r zh">跨境贸易创业者</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="download">
+  <div class="wrap">
+    <div class="ctaband">
+      <span class="eyebrow zh">立即开始</span>
+      <h2 class="h2 zh">一个账户，装下你的全球资产</h2>
+      <p class="lede zh">几分钟完成开户，即刻拥有属于你的美元账户与稳定币钱包。</p>
+      <div class="storebtns">
+        <div class="storebtn"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 2h-11A2.5 2.5 0 0 0 4 4.5v15A2.5 2.5 0 0 0 6.5 22h11a2.5 2.5 0 0 0 2.5-2.5v-15A2.5 2.5 0 0 0 17.5 2ZM12 20a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"/></svg><div><div class="sb-t">Download on the</div><div class="sb-b">App Store</div></div></div>
+        <div class="storebtn"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3 3.5v17a1 1 0 0 0 1.5.87l14-8.5a1 1 0 0 0 0-1.74l-14-8.5A1 1 0 0 0 3 3.5Z"/></svg><div><div class="sb-t">GET IT ON</div><div class="sb-b">Google Play</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer id="about">
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <div class="brand"><span class="mark zh">银安</span>INEN 银安</div>
+        <p class="zh">INEN 银安（Yin An）是 VSTAR Limited 旗下战略金融品牌，"银"代表银行级资产管理，"安"代表安全与安心，致力于以绝对的安全与稳定守护您的全球资产。</p>
+      </div>
+      <div class="foot-col">
+        <div class="ft zh">产品</div>
+        <a class="zh" href="#product">美元账户</a>
+        <a class="zh" href="#product">稳定币钱包</a>
+        <a class="zh" href="#product">INEN Earn 理财</a>
+        <a class="zh" href="#product">全球速汇</a>
+        <a class="zh" href="#product">银安尊享卡</a>
+      </div>
+      <div class="foot-col">
+        <div class="ft zh">公司</div>
+        <a class="zh" href="#about">关于我们</a>
+        <a class="zh" href="#">加入我们</a>
+        <a class="zh" href="#">品牌资源</a>
+        <a class="zh" href="#">联系我们</a>
+      </div>
+      <div class="foot-col">
+        <div class="ft zh">资源</div>
+        <a class="zh" href="#faq">常见问题</a>
+        <a class="zh" href="#security">安全中心</a>
+        <a class="zh" href="#">帮助中心</a>
+        <a class="zh" href="#">费率说明</a>
+      </div>
+      <div class="foot-col">
+        <div class="ft zh">法律</div>
+        <a class="zh" href="#">服务条款</a>
+        <a class="zh" href="#">隐私政策</a>
+        <a class="zh" href="#">卡片使用条款</a>
+        <a class="zh" href="#">AML / CFT 政策</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <div class="foot-legal zh">
+        INEN 银安是一家金融科技公司，非银行机构。所有银行服务由持牌银行合作伙伴提供。INEN 银安是 VSTAR Limited 旗下产品或业务名称。<br>
+        Copyright © INEN 银安 2026. VSTAR Limited 保留所有权利。
+      </div>
+      <div class="foot-social">
+        <a href="#" aria-label="X"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.6 8.7L23.3 22h-7l-5.5-7.2L4.5 22H1.4l8.1-9.3L1 2h7.2l5 6.6L18.9 2Z"/></svg></a>
+        <a href="#" aria-label="LinkedIn"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3V9Zm7 0h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21H18v-5.6c0-1.34-.02-3.07-1.87-3.07-1.87 0-2.16 1.46-2.16 2.97V21H10V9Z"/></svg></a>
+        <a href="#" aria-label="Instagram"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.2c3.2 0 3.58.01 4.85.07 1.17.05 1.97.24 2.43.4a4.9 4.9 0 0 1 1.77 1.15 4.9 4.9 0 0 1 1.15 1.77c.16.46.35 1.26.4 2.43.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.24 1.97-.4 2.43a4.9 4.9 0 0 1-1.15 1.77 4.9 4.9 0 0 1-1.77 1.15c-.46.16-1.26.35-2.43.4-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.97-.24-2.43-.4a4.9 4.9 0 0 1-1.77-1.15 4.9 4.9 0 0 1-1.15-1.77c-.16-.46-.35-1.26-.4-2.43C2.21 15.58 2.2 15.2 2.2 12s.01-3.58.07-4.85c.05-1.17.24-1.97.4-2.43a4.9 4.9 0 0 1 1.15-1.77A4.9 4.9 0 0 1 5.59 2.8c.46-.16 1.26-.35 2.43-.4C9.29 2.34 9.67 2.33 12 2.33Zm0 1.8c-3.15 0-3.5.01-4.73.07-.96.04-1.48.2-1.83.34-.46.18-.79.39-1.13.74-.35.34-.56.67-.74 1.13-.14.35-.3.87-.34 1.83-.06 1.23-.07 1.58-.07 4.73s.01 3.5.07 4.73c.04.96.2 1.48.34 1.83.18.46.39.79.74 1.13.34.35.67.56 1.13.74.35.14.87.3 1.83.34 1.23.06 1.58.07 4.73.07s3.5-.01 4.73-.07c.96-.04 1.48-.2 1.83-.34.46-.18.79-.39 1.13-.74.35-.34.56-.67.74-1.13.14-.35.3-.87.34-1.83.06-1.23.07-1.58.07-4.73s-.01-3.5-.07-4.73c-.04-.96-.2-1.48-.34-1.83a3.1 3.1 0 0 0-.74-1.13 3.1 3.1 0 0 0-1.13-.74c-.35-.14-.87-.3-1.83-.34-1.23-.06-1.58-.07-4.73-.07Zm0 4.4a5.6 5.6 0 1 1 0 11.2 5.6 5.6 0 0 1 0-11.2Zm0 1.8a3.8 3.8 0 1 0 0 7.6 3.8 3.8 0 0 0 0-7.6Zm5.83-2a1.31 1.31 0 1 1-2.62 0 1.31 1.31 0 0 1 2.62 0Z"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
